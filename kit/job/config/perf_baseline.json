@@ -1,0 +1,7 @@
+{
+  "note": "เวลาของ Blendata เดิม (ใช้เทียบใน SUMMARY_05) — ถามในขั้น 02 · ไม่มีข้อมูล = เว้น null แล้วรายงานเป็นตัวเลขดิบ",
+  "blendata_minutes": null,
+  "test_rows": null,
+  "prod_rows": null,
+  "per_step": {}
+}

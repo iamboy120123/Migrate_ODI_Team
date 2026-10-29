@@ -1,0 +1,64 @@
+# ผู้อนุมัติ comment "/approve Q14 B" · "/approve G2.M1" · "/approve W1" ใน PR → บันทึก ✅ พร้อมชื่อและลิงก์ comment ให้เอง (กลไก ③)
+name: approve-command
+on:
+  issue_comment:
+    types: [created]
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  approve:
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/approve')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: _trusted
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          path: work
+      - name: checkout PR branch
+        working-directory: work
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.issue.number }}
+        run: gh pr checkout "$PR"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: apply /approve
+        id: apply
+        working-directory: work
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          COMMENTER: ${{ github.event.comment.user.login }}
+          COMMENT_URL: ${{ github.event.comment.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.issue.number }}
+        run: |
+          set +e
+          export BASE_REF="$(gh pr view "$PR" --json baseRefName --jq .baseRefName)"
+          python ../_trusted/.github/scripts/approve_command.py
+          echo "rc=$?" >> "$GITHUB_OUTPUT"
+      - name: commit
+        if: steps.apply.outputs.rc == '0'
+        working-directory: work
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          COMMENTER: ${{ github.event.comment.user.login }}
+          COMMENT_URL: ${{ github.event.comment.html_url }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- 'projects/*/jobs/*/status/OPEN_DECISIONS.md' 'projects/*/jobs/*/status/GATES.md'
+          SUMMARY="$(printf '%s' "$COMMENT_BODY" | head -c 80 | tr '\n\r' '  ')"
+          git commit -m "approve: ${SUMMARY}" -m "Approved-by: @${COMMENTER} ${COMMENT_URL}"
+          git push
+      - name: reply
+        if: always()
+        working-directory: work
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.issue.number }}
+        run: test -f .approve_result.md && gh pr comment "$PR" --body-file .approve_result.md || true

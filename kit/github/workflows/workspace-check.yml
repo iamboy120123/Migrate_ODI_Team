@@ -1,0 +1,18 @@
+# ตรวจ workspace ทุก PR และทุก push เข้า main (workspace.py check --ci)
+name: workspace-check
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  workspace-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: workspace check
+        run: python tools/workspace.py check --ci

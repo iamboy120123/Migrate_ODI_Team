@@ -1,0 +1,9 @@
+# ไฟล์ ODI / SQL / ผลรัน ห้ามแปลงบรรทัด (ODI ตรวจ byte ของ XML)
+* text=auto
+*.xml -text
+*.sql -text
+*.csv -text
+*.txt -text
+*.zip binary
+*.ps1 text eol=crlf
+*.cmd text eol=crlf

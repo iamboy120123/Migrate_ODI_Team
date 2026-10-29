@@ -1,0 +1,26 @@
+{
+  "workflow_name": "ss_esim_landing_to_discovery",
+  "tasks": [
+    {
+      "task_id": "T001",
+      "task_name": "load_customer_dim",
+      "target_table": "customer_dim",
+      "merge_keys": ["customer_id"],
+      "sql": "SELECT *, upper(name) AS name_upper FROM raw.customer WHERE deleted_flag = '' AND created_at <= now()"
+    },
+    {
+      "task_id": "T002",
+      "task_name": "load_order_fact",
+      "target_table": "order_fact",
+      "merge_keys": [],
+      "sql": "SELECT order_id, TO_DATE(order_dt, 'yyyy-mm-dd') AS order_date, amount FROM raw.orders WHERE amount <> ''"
+    },
+    {
+      "task_id": "T003",
+      "task_name": "load_flag_status",
+      "target_table": "flag_status",
+      "merge_keys": ["flag_id"],
+      "sql": "SELECT flag_id, TRY_CAST(is_active AS BOOLEAN) AS is_active, date_sub(current_timestamp(), 7) AS week_ago FROM raw.flags"
+    }
+  ]
+}

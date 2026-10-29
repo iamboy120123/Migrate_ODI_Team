@@ -1,0 +1,41 @@
+{
+  "db": {
+    "ai_access": "ai",
+    "select_mode": "ask",
+    "users": "split",
+    "read_odi_log": false,
+    "default_env": "DEV"
+  },
+  "github": {
+    "mode": "a"
+  },
+  "lock": {
+    "expire_hours": 2
+  },
+  "ids": {
+    "base": 90000,
+    "step": 1000
+  },
+  "perf": {
+    "batch_window_min": null,
+    "slower_pct": null
+  },
+  "workspace_version": "2.10.0",
+  "ai_mode": "manual",
+  "error_handling": "fail-fast",
+  "target": {
+    "logical_schema": "DSS_ODI_LOG",
+    "context_code": "DEV",
+    "work_user": "dssdev",
+    "target_prefix": "dssdev.",
+    "repository_version": "05.02.02.20",
+    "odi_version": "14.1.2",
+    "origin_master_repository_id": "0",
+    "origin_work_repository_id": "11",
+    "schema_name": "DSSDEV"
+  },
+  "dev_ready": {
+    "topology": true,
+    "smart_import_rights": true
+  }
+}

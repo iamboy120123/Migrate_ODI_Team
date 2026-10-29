@@ -1,0 +1,24 @@
+# ทุก ✅ ที่เพิ่มในไฟล์ตัดสินใจ / gate ต้องมาจากผู้อนุมัติจริง (กลไก ③)
+name: verify-approvals
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify-approvals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: _trusted
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: verify approvals
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python _trusted/.github/scripts/verify_approvals.py --base ${{ github.event.pull_request.base.sha }} --head ${{ github.event.pull_request.head.sha }}
