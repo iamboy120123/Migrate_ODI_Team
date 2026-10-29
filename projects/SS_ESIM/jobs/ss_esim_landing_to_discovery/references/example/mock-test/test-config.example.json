@@ -1,0 +1,38 @@
+{
+  "_comment": "esim sample. Seeds are CSV (\\N = NULL, empty field = empty string like Spark). Paths are relative to this file.",
+  "spark": {"ansi": false, "timeParserPolicy": "CORRECTED", "timeZone": null},
+  "udfs": {"get_user": "blendata"},
+  "null_token": "\\N",
+  "tables": {
+    "tb_landing_ss_esim": {
+      "ddl": "body_tag string, partner string, owner string, iccid string, first_installed string, profile_type string, eid string, sim_type string, raw_data string, number_of_cols int, process_date timestamp, input_source_name string, partition_date bigint, partition_hour bigint, partition_minute bigint",
+      "seed": "seed/landing_r1.csv",
+      "oracle_columns": ["body_tag","partner","owner","iccid","first_installed","profile_type","eid","sim_type","input_source_name","partition_minute","process_date"]
+    },
+    "ext_dss_tb_master_cdr_type": {
+      "ddl": "cdr_type_runno int, cdr_type string, source_path string, data_table string, record_status string",
+      "seed": "seed/master_cdr_type.csv",
+      "oracle_columns": ["cdr_type","source_path","record_status"]
+    },
+    "ext_dss_vw_service_mapping_bno_key": {
+      "ddl": "b_no string, content_partner_id string, service_id int, network_type string, share_basis string, invoicing_company_id string, effective_date timestamp, expired_date timestamp, price_rate_type string, record_status string",
+      "seed": "seed/service_mapping.csv"
+    },
+    "tb_staging_ss_esim_landing_to_discovery_workflow_status": {
+      "ddl": "success boolean, running boolean, workflow_process_date string",
+      "seed": "seed/ws.csv"
+    },
+    "tb_staging_ss_esim_landing_to_discovery_workflow_status_temp": {"ddl": "success boolean", "seed": null},
+    "tb_staging_ss_esim_checkpoint": {"ddl": "checkpoint_partition bigint, process_date timestamp, partition_date bigint", "seed": null},
+    "tb_staging_ss_esim_checkpoint_temp": {"ddl": "checkpoint_partition bigint, process_date timestamp, partition_date bigint", "seed": null},
+    "tb_staging_ss_esim_raw_temp": {"ddl": "cdr_id string", "seed": null},
+    "tb_transaction_ss_esim_valid": {"ddl": "chk_duplicate string, status string, workflow_process_date string", "seed": null},
+    "tb_transaction_ss_esim_reject": {"ddl": "workflow_process_date string", "seed": null},
+    "tb_transaction_ss_esim_temp": {"ddl": "chk_duplicate string, workflow_process_date string", "seed": null}
+  },
+  "skip_tasks": ["000000", "080000", "999999"],
+  "rounds": [
+    {"name": "round1"},
+    {"name": "round2_resend", "append": {"tb_landing_ss_esim": ["seed/landing_r2.csv"]}}
+  ]
+}

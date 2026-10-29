@@ -1,0 +1,4 @@
+flowchart LR
+  SRC[Source / ingestion] --> LND[(tb_staging_ss_esim_landing_to_discovery_workflow_status)]
+  LND --> BLD[Blendata: ss_esim_landing_to_discovery]
+  BLD --> TGT[(Target tables)]

@@ -1,0 +1,46 @@
+{
+  "project": "SS_ESIM",
+  "job": "ss_esim_landing_to_discovery",
+  "owner": "iamboy120123",
+  "created_at": "2026-10-29",
+  "round": "R01",
+  "branch": "job/SS_ESIM/ss_esim_landing_to_discovery/R01",
+  "issue": 1,
+  "issue_unconfirmed": false,
+  "id_source": "a",
+  "odi_code": "SS_ESIM_L2D",
+  "id_base": 91000,
+  "files_answered": true,
+  "extras": true,
+  "landing": "tb_staging_ss_esim_landing_to_discovery_workflow_status",
+  "replaces_pending": [],
+  "target_tables_ready": true,
+  "tables": [
+    "TB_LANDING_SS_ESIM",
+    "TB_STAGING_SS_ESIM_CHECKPOINT",
+    "TB_STAGING_SS_ESIM_CHECKPOINT_TEMP",
+    "TB_STAGING_SS_ESIM_LANDING_TO_DISCOVERY_WORKFLOW_STATUS",
+    "TB_STAGING_SS_ESIM_LANDING_TO_DISCOVERY_WORKFLOW_STATUS_TEMP",
+    "TB_STAGING_SS_ESIM_RAW_TEMP",
+    "TB_TRANSACTION_SS_ESIM_REJECT",
+    "TB_TRANSACTION_SS_ESIM_TEMP",
+    "TB_TRANSACTION_SS_ESIM_VALID"
+  ],
+  "new_tables": [],
+  "state": "active",
+  "github_mode": null,
+  "db_mode": null,
+  "rounds": [
+    {
+      "round": "R01",
+      "reason": "เริ่มงาน",
+      "kind": "initial",
+      "date": "2026-10-29"
+    }
+  ],
+  "target_lock": {
+    "smart_export": "2279a661ab4fad2d1b6b17043950cdc6b97c90619f46b6b87bed35ce6174b5f2",
+    "columns": "3e911f30af004c1c9a0b385e93981d5265344ae1ac1363b542ad65a59613720d",
+    "linked_at": "2026-10-29T15:08:11+07:00"
+  }
+}

@@ -1,0 +1,5 @@
+flowchart LR
+  SRC[Source / ingestion] --> LND[(DSSDEV.tb_staging_ss_esim_landing_to_discovery_workflow_status)]
+  LND --> VAR[ODI variables]
+  VAR --> PKG[PKG_SS_ESIM_L2D]
+  PKG --> TGT[(DSSDEV targets)]

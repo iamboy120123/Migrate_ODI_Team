@@ -1,0 +1,14 @@
+{
+  "airflowExportModels": [
+    {
+      "workflowName": "wf_md14_test_sample",
+      "versions": [
+        {
+          "versionId": 1,
+          "createdDate": "2026-10-02",
+          "taskDetailString": "[{\"taskName\": \"stg_table_a_load\", \"taskId\": \"t-1001\", \"serviceTemplate\": \"SparkSqlAggregationService\", \"parentTask\": [], \"level\": 1, \"body\": {\"aggregationConfig\": {\"sql\": \"SELECT * FROM src.table_a WHERE load_dt = current_date()\", \"tableName\": \"DSSDEV.TABLE_A\", \"sinkOption\": {\"mode\": \"Overwrite\", \"partitions\": []}}}}, {\"taskName\": \"stg_table_b_load\", \"taskId\": \"t-1002\", \"serviceTemplate\": \"SparkSqlAggregationService\", \"parentTask\": [\"t-1001\"], \"level\": 2, \"body\": {\"aggregationConfig\": {\"sql\": \"SELECT * FROM src.table_b WHERE year_month = date_format(current_date(),'yyyyMM')\", \"tableName\": \"DSSDEV.TABLE_B\", \"sinkOption\": {\"mode\": \"Overwrite\", \"partitions\": [\"year_month\"]}}}}, {\"taskName\": \"stg_table_c_append\", \"taskId\": \"t-1003\", \"serviceTemplate\": \"SparkSqlAggregationService\", \"parentTask\": [\"t-1001\"], \"level\": 2, \"body\": {\"aggregationConfig\": {\"sql\": \"SELECT * FROM src.table_c_delta\", \"tableName\": \"DSSDEV.TABLE_C\", \"sinkOption\": {\"mode\": \"Append\", \"partitions\": []}}}}, {\"taskName\": \"stg_table_d_load\", \"taskId\": \"t-1004\", \"serviceTemplate\": \"SparkSqlAggregationService\", \"parentTask\": [\"t-1002\"], \"level\": 3, \"body\": {\"aggregationConfig\": {\"sql\": \"SELECT * FROM src.table_d\", \"tableName\": \"DSSDEV.TABLE_D\", \"sinkOption\": {\"mode\": \"Overwrite\"}}}}, {\"taskName\": \"stg_table_e_recovery_notify\", \"taskId\": \"t-1005\", \"serviceTemplate\": \"NotificationService\", \"parentTask\": [\"t-1004\"], \"level\": 4, \"body\": {\"sql\": null}}]"
+        }
+      ]
+    }
+  ]
+}

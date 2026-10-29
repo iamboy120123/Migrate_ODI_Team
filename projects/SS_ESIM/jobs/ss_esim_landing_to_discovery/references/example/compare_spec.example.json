@@ -1,0 +1,12 @@
+{
+  "_note": "copy เป็น compare_spec.json แล้วแก้ตามตาราง valid/reject ของ workflow · accept.* เปิดได้เฉพาะเมื่อมี Q ที่ปิดแล้วรองรับ",
+  "key": ["<business key>", "<file path>", "<process timestamp>"],
+  "compare": [],
+  "ignore": ["<id ที่ generate ตอนรัน>", "create_by", "workflow_process_date", "<วันที่รัน>"],
+  "ts_cols": ["<คอลัมน์ timestamp>"],
+  "num_cols": ["<คอลัมน์ตัวเลข>"],
+  "status_values": {"man": "MAN", "dup": "DUP", "ok": "COM"},
+  "accept": {
+    "q6_empty_string_man": {"enabled": false, "field_map": {"<ชื่อ field ใน filter_error>": "<คอลัมน์ผลลัพธ์>"}}
+  }
+}

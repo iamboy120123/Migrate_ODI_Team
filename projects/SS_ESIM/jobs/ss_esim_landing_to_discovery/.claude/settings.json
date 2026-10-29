@@ -1,0 +1,165 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python scripts/*)",
+      "Bash(python3 scripts/*)",
+      "Bash(py scripts/*)",
+      "Bash(python -m py_compile *)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Read(**)",
+      "Edit(output/sql/converted/**)",
+      "Edit(*.md)",
+      "Write(run_packs/**)",
+      "Edit(.design/**)",
+      "Write(.design/**)",
+      "Bash(python scripts/checks/verify_all.py*)",
+      "Bash(python scripts/checks/check_gate.py*)",
+      "Bash(python scripts/runpack/read_run_results.py*)",
+      "Write(status/CUTOVER_RUNBOOK.md)",
+      "Write(knowledge/**)",
+      "Edit(knowledge/**)",
+      "Bash(python scripts/testing/compare_results.py*)",
+      "Bash(python3 scripts/testing/compare_results.py*)",
+      "Bash(python scripts/ws/*)",
+      "Bash(python3 scripts/ws/*)",
+      "Bash(git fetch*)",
+      "Bash(gh issue list*)",
+      "Bash(gh issue view*)",
+      "Bash(gh pr view*)",
+      "Bash(gh pr list*)",
+      "Bash(gh api user*)",
+      "Bash(python scripts/runpack/run_sql.py*)",
+      "Bash(python scripts/runpack/run_pack.py*)",
+      "Bash(python3 scripts/runpack/run_sql.py*)",
+      "Bash(python3 scripts/runpack/run_pack.py*)",
+      "Bash(py scripts/runpack/run_sql.py*)",
+      "Bash(py scripts/runpack/run_pack.py*)"
+    ],
+    "ask": [
+      "Edit(config/config.json)",
+      "Edit(scripts/**)",
+      "Bash(python scripts/_deprecated/*)",
+      "Bash(python scripts/pipeline/build_odi_export.py*--new-guid*)",
+      "Bash(python scripts/pipeline/sync_guid_from_export.py*--update-config*)",
+      "Bash(git commit*)",
+      "Edit(status/OPEN_DECISIONS.md)",
+      "Edit(status/PREFLIGHT_CHECKLIST.md)",
+      "Edit(status/GATES.md)",
+      "Edit(.design/adr/**)",
+      "Write(.design/adr/**)",
+      "Bash(git push*)",
+      "Bash(gh issue create*)",
+      "Bash(gh issue edit*)",
+      "Bash(gh issue comment*)",
+      "Bash(gh pr create*)",
+      "Bash(gh pr ready*)",
+      "Bash(gh pr comment*)",
+      "Bash(git pull*)",
+      "Bash(python scripts/runpack/run_sql.py*--execute*)",
+      "Bash(python scripts/runpack/run_pack.py*--execute*)",
+      "Bash(python3 scripts/runpack/run_sql.py*--execute*)",
+      "Bash(python3 scripts/runpack/run_pack.py*--execute*)",
+      "Bash(py scripts/runpack/run_sql.py*--execute*)",
+      "Bash(py scripts/runpack/run_pack.py*--execute*)",
+      "Bash(python scripts/runpack/run_sql.py*--run-read*)",
+      "Bash(python scripts/runpack/run_pack.py*--run-read*)",
+      "Bash(python3 scripts/runpack/run_sql.py*--run-read*)",
+      "Bash(python3 scripts/runpack/run_pack.py*--run-read*)",
+      "Bash(py scripts/runpack/run_sql.py*--run-read*)",
+      "Bash(py scripts/runpack/run_pack.py*--run-read*)"
+    ],
+    "deny": [
+      "Edit(input/**/export_workflow.json)",
+      "Write(input/**/export_workflow.json)",
+      "Edit(input/blendata/**)",
+      "Write(input/blendata/**)",
+      "Edit(input/odi_reference/**)",
+      "Write(input/odi_reference/**)",
+      "Edit(output/odi_export/_guid_map.json)",
+      "Write(output/odi_export/_guid_map.json)",
+      "Edit(output/odi_export/_guid_keys.json)",
+      "Write(output/odi_export/_guid_keys.json)",
+      "Bash(rm *)",
+      "Bash(del *)",
+      "Bash(Remove-Item*)",
+      "Bash(git reset --hard*)",
+      "Edit(output/odi_export/PROJ_EXPORT.xml)",
+      "Write(output/odi_export/PROJ_EXPORT.xml)",
+      "Bash(git push*main*)",
+      "Bash(git push*master*)",
+      "Bash(git push*--force*)",
+      "Bash(git push*--delete*)",
+      "Bash(git push* +*)",
+      "Bash(gh repo edit*)",
+      "Bash(gh repo delete*)",
+      "Bash(gh issue delete*)",
+      "Bash(gh issue transfer*)",
+      "Bash(gh label delete*)",
+      "Bash(gh api*-X DELETE*)",
+      "Bash(gh api*--method DELETE*)",
+      "Bash(gh api*protection*)",
+      "Bash(sqlplus*)",
+      "Bash(sqlcl*)",
+      "Bash(sql *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/hooks/guard_owned_files.py\"",
+            "timeout": 20
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/hooks/guard_bash.py\"",
+            "timeout": 20
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/hooks/guard_github.py\"",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/hooks/post_edit.py\"",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/scripts/hooks/remind_status.py\"",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  }
+}

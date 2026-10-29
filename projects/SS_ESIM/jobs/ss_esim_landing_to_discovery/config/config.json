@@ -1,0 +1,81 @@
+{
+  "project_name": "SS_ESIM_L2D",
+  "created_at": "2026-10-29",
+  "created_by": "41642975+iamboy120123@users.noreply.github.com",
+  "updated_at": "2026-10-29",
+  "kit_version": "2.8.1 (2026-10-14)",
+  "ai_mode": "manual",
+  "error_handling": "fail-fast",
+  "load_strategy": "smart",
+  "target_table_prefix": "dssdev.",
+  "paths": {
+    "input_export_workflow": "input/blendata/export_workflow.json",
+    "output_raw_sql": "output/sql/raw",
+    "output_converted_sql": "output/sql/converted",
+    "output_dml": "output/dml",
+    "output_odi_export": "output/odi_export/PROJ_EXPORT.xml",
+    "review_flags": "status/REVIEW_FLAGS.md",
+    "raw_manifest": "output/sql/raw/_manifest.json",
+    "dml_manifest": "output/dml/_manifest.json"
+  },
+  "odi": {
+    "project_code": "SS_ESIM_L2D",
+    "project_name": "SS_ESIM_L2D",
+    "folder_name": "SS_ESIM_L2D",
+    "package_name": "PKG_SS_ESIM_L2D",
+    "logical_schema": "DSS_ODI_LOG",
+    "context_code": "DEV",
+    "techno": "ORACLE",
+    "id_base": 91000,
+    "odi_user": "SUPERVISOR",
+    "repository_version": "05.02.02.20",
+    "odi_version": "14.1.2",
+    "origin_master_repository_id": 0,
+    "origin_work_repository_id": 11,
+    "work_user": "DSSDEV",
+    "variables": [
+      {
+        "name": "v_max_partition",
+        "datatype": "N",
+        "var_type": "P",
+        "store": "L",
+        "logical_schema": "DSS_ODI_LOG",
+        "refresh_query": "SELECT NVL(MAX(partition_minute), 0) FROM tb_staging_ss_esim_landing_to_discovery_workflow_status",
+        "replaces_tasks": [
+          "000000"
+        ],
+        "note": "partition_minute ล่าสุดของ landing (0 = landing ว่าง) — สร้างโดย Setup.ps1"
+      },
+      {
+        "name": "v_lag_minutes",
+        "datatype": "N",
+        "var_type": "P",
+        "store": "L",
+        "logical_schema": "DSS_ODI_LOG",
+        "refresh_query": "SELECT NVL(ROUND((SYSDATE - TO_DATE(TO_CHAR(MAX(partition_minute)), 'YYYYMMDDHH24MI')) * 1440), 999999) FROM tb_staging_ss_esim_landing_to_discovery_workflow_status",
+        "note": "lag (นาที) ของ landing ล่าสุด; 999999 = landing ว่าง — Evaluate step (<= 120) รอ sample จาก Studio"
+      }
+    ],
+    "work_repo_schema": null
+  },
+  "ai_review": {
+    "model": "claude-sonnet-4-5",
+    "max_tokens": 4096
+  },
+  "truncate_style": "plain",
+  "scope": {
+    "excluded_tasks": [],
+    "excluded_reason": {}
+  },
+  "precheck": {
+    "landing_max_lag_minutes": 120,
+    "note": "ตั้งจาก pattern การมาของ landing จริง (กลางคืนอาจไม่มีไฟล์)"
+  },
+  "profile": {
+    "result_csv": "input/run_results/profile_result.csv",
+    "length_margin_pct": 50,
+    "landing_table": "tb_staging_ss_esim_landing_to_discovery_workflow_status",
+    "landing_column_map": {},
+    "note": "landing_column_map = คอลัมน์ landing -> คอลัมน์ target ที่รับค่าตรง (เติมหลัง Phase 4)"
+  }
+}

@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.bak-*
+.claude/settings.local.json
+# ผลรันจาก Oracle/ODI อาจมีข้อมูลจริง — ไม่ commit
+input/run_results/**/*.csv
+input/run_results/**/*.png

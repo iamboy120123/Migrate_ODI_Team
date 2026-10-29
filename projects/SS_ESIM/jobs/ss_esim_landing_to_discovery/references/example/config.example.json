@@ -1,0 +1,77 @@
+{
+  "project_name": "MY_MIGRATION",
+  "created_at": "2026-09-25",
+  "created_by": "sa@g-able.com",
+  "ai_mode": "manual",
+  "error_handling": "fail-fast",
+  "load_strategy": "smart",
+  "target_table_prefix": "",
+  "schema_mode": "literal",
+  "concat_policy": "",
+  "convert_rules": {
+    "get_user": "auto",
+    "format_string": "auto",
+    "date_format": "auto",
+    "order_by_const": "auto",
+    "like_escape": "auto",
+    "cast_types": "auto",
+    "interval": "auto",
+    "bigint_ctor": "auto",
+    "nullif_empty": "auto"
+  },
+  "paths": {
+    "input_export_workflow": "input/<workflow>/export_workflow.json",
+    "output_raw_sql": "output/sql/raw",
+    "output_converted_sql": "output/sql/converted",
+    "output_dml": "output/dml",
+    "output_odi_export": "output/odi_export/PROJ_EXPORT.xml",
+    "review_flags": "status/REVIEW_FLAGS.md",
+    "raw_manifest": "output/sql/raw/_manifest.json",
+    "dml_manifest": "output/dml/_manifest.json"
+  },
+  "odi": {
+    "project_code": "<WORKFLOW_UPPER>",
+    "project_name": "<workflow>",
+    "folder_name": "<workflow>",
+    "package_name": "PKG_<WORKFLOW_UPPER>",
+    "logical_schema": "",
+    "context_code": "",
+    "techno": "ORACLE",
+    "id_base": 90000,
+    "odi_user": "SUPERVISOR",
+    "repository_version": "",
+    "odi_version": "",
+    "origin_master_repository_id": null,
+    "origin_work_repository_id": null,
+    "work_user": "",
+    "variables": [],
+    "work_repo_schema": null
+  },
+  "ai_review": {
+    "model": "claude-sonnet-4-5",
+    "max_tokens": 4096
+  },
+  "truncate_style": "plain",
+  "scope": {
+    "excluded_tasks": [],
+    "excluded_reason": {}
+  },
+  "precheck": {
+    "landing_max_lag_minutes": 120,
+    "note": "ตั้งจาก pattern การมาของ landing จริง"
+  },
+  "profile": {
+    "result_csv": "input/run_results/profile_result.csv",
+    "length_margin_pct": 50,
+    "landing_table": "",
+    "landing_column_map": {},
+    "note": "landing_column_map = คอลัมน์ landing -> คอลัมน์ target ที่รับค่าตรง (จาก SQL 040000) ใช้เพิ่มความยาวจาก source จริง"
+  },
+  "_comment": {
+    "ai_mode": "auto = agent_reviewer.py แก้ SQL ที่ถูก flag เอง | manual = SA / Claude Code แก้ใน output/sql/converted/",
+    "error_handling": "errlog = DBMS_ERRLOG | fail-fast = ไม่แนบ error logging clause",
+    "load_strategy": "smart = MERGE ถ้ามี merge_keys มิฉะนั้น overwrite | overwrite | upsert",
+    "odi.variables": "Setup.ps1 สร้าง v_max_partition / v_lag_minutes จากตาราง landing; replaces_tasks = task precheck ที่ตัดออกจาก package",
+    "odi.work_repo_schema": "user ที่ query ตาราง SNP_* ได้ (สำหรับ S5b)"
+  }
+}

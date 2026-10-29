@@ -1,0 +1,4 @@
+b_no,content_partner_id,service_id,network_type,share_basis,invoicing_company_id,effective_date,expired_date,price_rate_type,record_status
+ECP_ESIM_SalesT,10128,10000049,3PP,CSH,AWN,2025-01-16 00:00:00,\N,\N,A
+ECP_ESIM_Sales_Gable,10100,10000001,3PP,CSH,AWN,2024-01-01 00:00:00,2025-12-31 00:00:00,\N,A
+ECP_ESIM_ServiceT,10128,10000048,3PP,CSH,AWN,2025-01-16 00:00:00,\N,\N,A
